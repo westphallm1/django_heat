@@ -1,4 +1,44 @@
 {% load staticfiles %}
-<h1>{{"Fire Very Hot"}}</h1>
 <img src="{% static "default.png" %}" alt="My image"/>
-<p>Root directory is: {{root_dir}}</p>
+<table>
+  <tr>
+    <td><button onClick="show_element('heat_table')">Show Solution</button></td>
+    <td><button onClick="show_element('help')">Show Help</button></td>
+  </tr>
+</table>
+<div id="help" style = "display:none">
+  <button onClick="hide_element('help')">Hide Help</button>
+  <p>Coming Soon</p>
+</div>
+<div id="heat_table" style="display:none">
+  <button onClick="hide_element('heat_table')">Hide Solution</button>
+  <table style="width:100%">
+    <tr>
+      <th>Process</th>
+      <th>Q<sub>surr on sys</sub></th>	
+      <th>W<sub>surr on sys</sub></th>
+      <th>&Delta;E</th>
+      <th>T<sub>i</sub></th>
+      <th>T<sub>f</sub></th>
+    </tr>
+    {% for ht in heat_table %}
+      <tr>
+          {% for item in ht %}
+              <td>{{item}}</td>
+          {% endfor %}
+      </tr>
+      
+    {% endfor %}
+  </table>
+</div>
+
+
+<script type="text/javascript">
+	function hide_element(element){
+  	document.getElementById(element).style.display = 'none'; 
+  };
+	function show_element(element){
+  	document.getElementById(element).style.display = 'block'; 
+  };
+</script>
+</body>

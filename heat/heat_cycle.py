@@ -273,16 +273,32 @@ def plot_heat_cycle(HC, fname = None, figsize=(8,6),given_value = 'T0'):
 def text_QWE_table(HC,fname):
     T_vals = list(HC.T_values)
     T_vals.append(T_vals[0])
-    with open(fname,'w') as f:
-        for i,Q,W,E,T0,Tf in zip(range(len(HC.Q_values)),HC.Q_values,
-                         HC.W_values,HC.delta_E_values,
-                         T_vals[:-1],T_vals[1:]):
-            j = i+2
-            if j > len(HC.Q_values): j = 1
+
+    if fname is None:
+        out_arr = []
+    else:
+        f = open(fname,'r')
+        
+    for i,Q,W,E,T0,Tf in zip(range(len(HC.Q_values)),HC.Q_values,
+                     HC.W_values,HC.delta_E_values,
+                     T_vals[:-1],T_vals[1:]):
+        j = i+2
+        if j > len(HC.Q_values): j = 1
+        if fname is None:
+            out_arr.append(["%s%s"%(i+1,j)])
+            for val in (Q,W,E,T0,Tf):
+                out_arr[i].append("%.2e"%val)
+        else:
             f.write("%s%s %.2e %.2e %.2e %.2e %.2e\n"%(i+1,j,Q,W,E,T0,Tf))
-def gen_img_and_png(img_fname = None, table_fname = 'default.txt'):
-    #from matplotlib import pyplot as plt
-    """test case"""
+            
+    if fname is None:
+        return out_arr
+    else:
+        f.close()
+            
+            
+def gen_img_and_png(img_fname = None, table_fname = None):
+    """Generate a heat image and its corresponding solution table"""
     #makes sure the midpoints for the processes are not too close to the end
     #points    
     readable_graph = False
@@ -311,7 +327,7 @@ def gen_img_and_png(img_fname = None, table_fname = 'default.txt'):
                     
                         
     plot_heat_cycle(hc,fname = img_fname, given_value=['n','T0'].pop(np.random.randint(2)))
-    text_QWE_table(hc,table_fname)
+    return text_QWE_table(hc,table_fname)
     
     
 if __name__ == '__main__':
