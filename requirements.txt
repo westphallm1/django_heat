@@ -97,3 +97,8 @@ websockify==0.5.1
 wheel==0.24.0
 wsgiref==0.1.2
 zope.interface==4.0.5
+dj-database-url==0.3.0
+dj-static==0.0.6
+gunicorn==19.1.1
+psycopg2==2.5.1
+static==0.4
