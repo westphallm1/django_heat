@@ -1,44 +1,151 @@
 {% load staticfiles %}
-<img src="{% static "default.png" %}" alt="My image"/>
-<table>
-  <tr>
-    <td><button onClick="show_element('heat_table')">Show Solution</button></td>
-    <td><button onClick="show_element('help')">Show Help</button></td>
-  </tr>
-</table>
-<div id="help" style = "display:none">
-  <button onClick="hide_element('help')">Hide Help</button>
-  <p>Coming Soon</p>
-</div>
-<div id="heat_table" style="display:none">
-  <button onClick="hide_element('heat_table')">Hide Solution</button>
+<link rel="stylesheet" href="{% static 'heat.css' %}">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+
+<header class = "navbar navbar-fixed-top navbar-inverse">
+  <div class = "container">
+    <a href="{% url 'home'%}" class='logo'>HotLoops</a>
+    <ul class = "nav navbar-nav navbar-right">
+      <li><a href= '#' id = 'toggle_page' onClick="toggle_element('heat_table','help','toggle_page')" class = 'toplink'>Show Solution</a></li>
+      <li><a href="{% url 'home'%}" class = 'toplink'>New Cycle</a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="center jumbotron">
   <table style="width:100%">
     <tr>
-      <th>Process</th>
-      <th>Q<sub>surr on sys</sub></th>	
-      <th>W<sub>surr on sys</sub></th>
-      <th>&Delta;E</th>
-      <th>T<sub>i</sub></th>
-      <th>T<sub>f</sub></th>
+      <td>
+        <img src="{% static 'default.png' %}" alt="My image" border="3"/>
+      </td>
+      <td>
+        <div id="help" style = "display:block">
+          <h3>How-To</h3>
+          <p>
+            The diagram at left depicts the Pressure Volume diagram of a randomly generated
+            heat engine, a series of ideal gas processes in which heat energy 
+            is transfered from the surroundings to the gas and work is done on the 
+            surroundings by the gas. The ideal gas in a heat engine returns
+            to its original state, allowing process to be repeated. Ideal
+            gas processes are governed by the equations:
+          </p>
+          <p>
+            <i>PV = nRT</i>, and 
+            <i>&Delta;E<sub>sys</sub> = Q<sub>on sys</sub> + W<sub>on sys</sub>
+            = 1.5nR&Delta;T</i>, where R is the ideal gas constant (8.31), n is the 
+            moles of ideal gas, and T is the temperature of the system.
+            The efficiency of a heat engine is how much of the heat
+            added to the gas is converted to work on the surroundings.
+            <i>(N = -W<sub>total</sub>/Q<sub>total</sub>)</i>
+          </p>
+          <p>
+            To compute the engine's efficiency, you must find the total work and heat
+            transferred at each step.
+          </p>
+          <p>
+            The heat engine shown at left starts in the lower right and moves
+            clockwise, and consists of any of the following ideal gas processes:
+          </p>
+          <table class = "hot" style="width:100%">
+            <tr class = "hot">
+              <th class = "hot">Process</th>
+              <th class ="hot">Constant Quantity</th>
+              <th class = "hot">Q<sub>surr on sys</sub> (J)</th>	
+              <th class = "hot">W<sub>surr on sys</sub> (J)</th>
+              <th class = "hot">&Delta;E (J)</th>
+            </tr>
+            <tr>
+              <td class = "hot"><font color="red"><b>Adiabatic</b></font></td>
+              <td class = "hot">P*V<sup>&gamma;</sup> (&gamma;=1.67)</td>
+              <td class = "hot">0</td>
+              <td class = "hot">1.5nR&Delta;T</td>
+              <td class = "hot">1.5nR&Delta;T</td>
+            </tr>
+            <tr>
+              <td class = "hot"><font color="blue"><b>Isothemal</b></font></td>
+              <td class = "hot">T</td>
+              <td class = "hot">nRT*ln(V<sub>f</sub>/V<sub>i</sub>)</td>
+              <td class = "hot">-nRT*ln(V<sub>f</sub>/V<sub>i</sub>)</td>
+              <td class = "hot">0</td>
+            </tr>
+            <tr>
+              <td class = "hot"><font color="green"><b>Isobaric</b></font></td>
+              <td class = "hot">P</td>
+              <td class = "hot">2.5nR&Delta;T</td>
+              <td class = "hot">-nR&Delta;T</td>
+              <td class = "hot">1.5nR&Delta;T</td>
+            </tr>
+            <tr>
+              <td class = "hot"><font color="magenta"><b>Isochoric</b></font></td>
+              <td class = "hot">V</td>
+              <td class = "hot">1.5nR&Delta;T</td>
+              <td class = "hot">0</td>
+              <td class = "hot">1.5nR&Delta;T</td>
+            </tr>
+          </table>
+        </div>
+        <div id="heat_table" style="display:none">
+          <h3>Solution</h3>
+          <table class = "hot" style="width:100%">
+            <tr class = "hot">
+              <th class = "hot">Process</th>
+              <th class = "hot">Q<sub>surr on sys</sub> (J)</th>	
+              <th class = "hot">W<sub>surr on sys</sub> (J)</th>
+              <th class = "hot">&Delta;E (J)</th>
+              <th class = "hot">T<sub>i</sub> (K)</th>
+              <th class = "hot">T<sub>f</sub> (K)</th>
+            </tr>
+            {% for ht in heat_table %}
+              <tr class = "hot">
+                  {% for item in ht %}
+                      <td class = "hot">{{item}}</td>
+                  {% endfor %}
+              </tr>
+              
+            {% endfor %}
+          </table>
+          <p>Efficiency: {{eff}}</p>
+        </div>
+      </td>
     </tr>
-    {% for ht in heat_table %}
-      <tr>
-          {% for item in ht %}
-              <td>{{item}}</td>
-          {% endfor %}
-      </tr>
-      
-    {% endfor %}
-  </table>
+  </table>  
 </div>
+<footer class = "footer">
+  <small class= "left_foot">
+    <p>Site by Matthew Westphall</p>
+    <p>
+      Site Layout inspired by Micheal Hartl's 
+      <a href="https://www.railstutorial.org/">Ruby on Rails Tutorial</a>
+    </p>
+  </small>
 
-
+  <ul>
+    <li style="font-weight: bold">Powered By</li>
+    <li><a href="https://www.djangoproject.com/">Django</a></li>
+    <li><a href="https://www.heroku.com/">Heroku</a></li>
+    <li><a href="http://getbootstrap.com/">Bootstrap</a></li>
+    <li><a href="https://c9.io/?redirect=0">Cloud9</a></li>
+  </ul>
+</footer>
 <script type="text/javascript">
-	function hide_element(element){
-  	document.getElementById(element).style.display = 'none'; 
-  };
-	function show_element(element){
-  	document.getElementById(element).style.display = 'block'; 
+  //DRY my ass
+  function toggle_element(element1,element2,element3){
+  	if(document.getElementById(element1).style.display == 'block'){
+    	document.getElementById(element1).style.display = 'none'; 
+    } else {
+    	document.getElementById(element1).style.display = 'block';
+    }
+    if(document.getElementById(element2).style.display == 'block'){
+    	document.getElementById(element2).style.display = 'none'; 
+    } else {
+    	document.getElementById(element2).style.display = 'block';
+    }
+    if(document.getElementById(element3).innerHTML == 'Show Solution'){
+      document.getElementById(element3).innerHTML = 'Show How-To'
+    } else {
+      document.getElementById(element3).innerHTML = 'Show Solution'
+    }
   };
 </script>
-</body>

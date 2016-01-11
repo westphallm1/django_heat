@@ -102,7 +102,7 @@ class HeatCycle():
             self.Q_values.append(Q)
             self.W_values.append(W)
             self.delta_E_values.append(delta_E)        
-        
+
     def gen_4step_cycle(self):
         """Creates a four step complete thermal cycle"""
         start = ['A','B','C','T']
@@ -231,7 +231,7 @@ class HeatCycle():
         #default axis labels and title        
         plt.xlabel(r"$\mathdefault{Volume (m^{3})}$")
         plt.ylabel("Pressure (Pa)")
-        plt.title("4 Step Heat Engine")
+        plt.title("Heat Engine")
         
         
         dV = (self.V0-self.Vf)/5.
@@ -292,7 +292,7 @@ def text_QWE_table(HC,fname):
             f.write("%s%s %.2e %.2e %.2e %.2e %.2e\n"%(i+1,j,Q,W,E,T0,Tf))
             
     if fname is None:
-        return out_arr
+        return out_arr,"%2.2f%%"%(100*HC.calc_efficiency())
     else:
         f.close()
             
