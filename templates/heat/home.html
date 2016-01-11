@@ -18,31 +18,34 @@
   <table style="width:100%">
     <tr>
       <td>
-        <img src="{% static 'default.png' %}" alt="My image" border="3"/>
+        <img src="{% static 'default.png' %}" style="border:2px solid black"alt="My image" border="3"/>
       </td>
       <td>
         <div id="help" style = "display:block">
-          <h3>How-To</h3>
+          <h3><b>How-To:</b></h3>
           <p>
-            The diagram at left depicts the Pressure Volume diagram of a randomly generated
-            heat engine, a series of ideal gas processes in which heat energy 
-            is transfered from the surroundings to the gas and work is done on the 
-            surroundings by the gas. The ideal gas in a heat engine returns
-            to its original state, allowing process to be repeated. Ideal
-            gas processes are governed by the equations:
+            The diagram at left depicts the <a href = '#'>Pressure-Volume diagram</a> of a 
+            <a href = '#'>heat engine</a>. 
+            A heat engine is a mechanism in which heat energy
+            from a hot reservoir is tranfered to an ideal gas, which then, 
+            through a series of ideal gas processes,
+            converts part of that energy into mechanical work and releases the rest back as
+            thermal energy into a cold reservoir. All ideal gas processes follow 
+            the equations:
           </p>
           <p>
             <i>PV = nRT</i>, and 
             <i>&Delta;E<sub>sys</sub> = Q<sub>on sys</sub> + W<sub>on sys</sub>
             = 1.5nR&Delta;T</i>, where R is the ideal gas constant (8.31), n is the 
             moles of ideal gas, and T is the temperature of the system.
-            The efficiency of a heat engine is how much of the heat
-            added to the gas is converted to work on the surroundings.
+            The efficiency of a heat engine what percentage of the heat
+            added to the gas is converted to mechanical energy.
             <i>(N = -W<sub>total</sub>/Q<sub>total</sub>)</i>
           </p>
           <p>
-            To compute the engine's efficiency, you must find the total work and heat
-            transferred at each step.
+            To compute the engine's efficiency, find the work and heat
+            transferred at each step, then sum these numbers over all steps and 
+            take the quotient.
           </p>
           <p>
             The heat engine shown at left starts in the lower right and moves
@@ -87,7 +90,13 @@
           </table>
         </div>
         <div id="heat_table" style="display:none">
-          <h3>Solution</h3>
+          <h3><b>Solution:</b></h3>
+          <p>
+            The heat transfer to the system, work done on the system, change in 
+            energy of the system, and change in temperature of the system between 
+            each point on the PV diagram, starting in the lower right, is shown
+            in the table below:
+          </p>
           <table class = "hot" style="width:100%">
             <tr class = "hot">
               <th class = "hot">Process</th>
@@ -112,6 +121,7 @@
     </tr>
   </table>  
 </div>
+<div id="DRY my ass" class="frontend sucks"></div>
 <footer class = "footer">
   <small class= "left_foot">
     <p>Site by Matthew Westphall</p>
